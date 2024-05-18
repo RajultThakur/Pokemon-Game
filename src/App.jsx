@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
+import { Route, Routes, Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchCurrentPokemon,
+  fetchNextPokemon,
+  startGame,
+} from './store/slices/pokemon.slice';
+import PokemonCard from "./components/pokemonCards/PokemonCard"
 import WelcomeScreen from './components/WelcomeScreen';
-
+const PATH = '/pokemon/favorite';
 
 function App() {
+  const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
+
+  const dispatch = useDispatch();
+  const { isGameStarted,isError } = useSelector((state) => state.pokemon);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle('dark');
   };
+
+  useEffect(() => {
+    dispatch(fetchCurrentPokemon());
+    dispatch(fetchNextPokemon());
+  }, []);
 
   return (
     <div
@@ -23,7 +40,27 @@ function App() {
       >
         {darkMode ? '☀️' : '🌙'}
       </button>
-      <WelcomeScreen/>
+      <Link to={location.pathname === PATH ? '/' : PATH}>
+        <button
+          className={`absolute top-4 left-4 bg-gray-800 dark:bg-gray-200 w-10 h-10
+           rounded-full text-red-600 z-50  max-sm:left-1 `}
+        >
+          {location.pathname !== PATH ? '❤' : '🏠'}
+        </button>
+      </Link>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            isGameStarted ? (
+              <PokemonCard />
+            ) : (
+              <WelcomeScreen start={() => dispatch(startGame())} />
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 }

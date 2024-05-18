@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hideScrollBar::-webkit-scrollbar {
+  scrollbar-width: none;
+}
+
+@keyframes swipe-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+.swipe-out {
+  animation: swipe-out 0.5s forwards;
+}
+
+@keyframes swipe-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.swipe-in {
+  animation: swipe-in 0.5s forwards;
+}
