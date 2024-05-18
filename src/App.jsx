@@ -10,6 +10,8 @@ import {
   startGame,
 } from './store/slices/pokemon.slice';
 import LikedPokemons from './components/LikedPokemon';
+import NotFound from './components/errors/NotFound';
+import ServerDown from './components/errors/ServerDown';
 const PATH = '/pokemon/favorite';
 
 function App() {
@@ -28,6 +30,12 @@ function App() {
     dispatch(fetchCurrentPokemon());
     dispatch(fetchNextPokemon());
   }, []);
+
+  if(isError){
+    return (
+      <ServerDown/>
+    )
+  } 
 
   return (
     <div
@@ -62,6 +70,7 @@ function App() {
           }
         />
         <Route exact path="/pokemon/favorite" element={<LikedPokemons />} />
+        <Route exact path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
