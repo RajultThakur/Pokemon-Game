@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import { Route, Routes, Link, useLocation } from 'react-router-dom';
+import WelcomeScreen from './components/WelcomeScreen';
+import PokemonCard from './components/pokemonCards/PokemonCard';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchCurrentPokemon,
   fetchNextPokemon,
   startGame,
 } from './store/slices/pokemon.slice';
-import PokemonCard from "./components/pokemonCards/PokemonCard"
-import WelcomeScreen from './components/WelcomeScreen';
+import LikedPokemons from './components/LikedPokemon';
 const PATH = '/pokemon/favorite';
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
             )
           }
         />
+        <Route exact path="/pokemon/favorite" element={<LikedPokemons />} />
       </Routes>
     </div>
   );
